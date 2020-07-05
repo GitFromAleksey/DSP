@@ -1,6 +1,10 @@
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 from matplotlib.ticker import (MultipleLocator, FormatStrFormatter, AutoMinorLocator)
 import numpy as np
+
+print(mpl.__version__)
+print(mpl.get_backend())
 
 # генерация данных для построения графика
 x = np.linspace(0, 10, 10)
@@ -9,6 +13,8 @@ y2 = [i**2 for i in x]
 
 # получение экземпляра чего-то там...
 fig, ax = plt.subplots(figsize=(8, 6))
+#ax1 = fig.add_subplot(111)
+#ax1.set_title("ax1")
 
 ax.set_title("Графики зависимостей: y1=4*x, y2=x^2", fontsize=16)
 
