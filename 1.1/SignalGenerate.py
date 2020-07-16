@@ -19,7 +19,7 @@ def getSinus(f0, A, ts, time, ShiftZero, ShiftPhaseDegree):
     n = time/ts # кол-во отсчетов
     #ts = T/n # промежуток времени кантования, сек/отсчёт
     ShiftPhaseRadian = (ShiftPhaseDegree/180)*np.pi # сдвиг фазы в радианах(для рассчёта)
-    n_array = np.arange(0, n, 1) # отсчёты(массив)
+    n_array = np.arange(0, n, 1) # n отсчётов с шагом 1 (массив)
     
     print('A = ', A, ', амплитуда сигнала')
     print('ShiftPhaseDegree = ', ShiftPhaseDegree, ', градусы')
