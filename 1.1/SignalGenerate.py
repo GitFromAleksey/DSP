@@ -16,18 +16,22 @@ def getSinus(f0, A, ts, time, ShiftZero, ShiftPhaseDegree):
     print(SelfFileName,'-> Sinus generate begin:')
     
     T = 1/f0 # период, сек
+    fs = 1/ts # частота дискретизации, Гц
     n = time/ts # кол-во отсчетов
     #ts = T/n # промежуток времени кантования, сек/отсчёт
     ShiftPhaseRadian = (ShiftPhaseDegree/180)*np.pi # сдвиг фазы в радианах(для рассчёта)
     n_array = np.arange(0, n, 1) # n отсчётов с шагом 1 (массив)
     
+    print('f0 = ', f0, ',Гц - частота сигнала')
+    print('ts = ', ts, ',сек - период дискретизации')
+    print('fs = ', fs, ',Гц - частота дискретизации')
     print('A = ', A, ', амплитуда сигнала')
     print('ShiftPhaseDegree = ', ShiftPhaseDegree, ', градусы')
     print('ShiftPhaseRadian = ', ShiftPhaseRadian, ', радианы')
-    print('f0 = ', f0, ',Гц - частота сигнала')
+    
     print('T = ', T, ',сек - период сигнала')
     print('n = ', n, ', кол-во отсчётов')
-    print('ts = ', ts, ',сек - период дискретизации')
+    
     
     _tn = n_array * ts
     _x = 2 * np.pi * f0 * _tn
