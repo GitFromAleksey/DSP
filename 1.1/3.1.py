@@ -77,21 +77,74 @@ def main(argv):
         print('x(', cnt,') =',x)
         cnt += 1
 
+    X_list = []
     print('\nРассчёт значений гармоник:')
     for m in range(N):
         X = 0
         for n in range(N):
-            r = np.round(x_in[n] * np.cos(2*np.pi*n*m/N), 4)
-            im = -np.round((x_in[n] * np.sin(2*np.pi*n*m/N)), 4)
-##            r = x_in[n] * np.cos(2*np.pi*n*m/N)
-##            im = -(x_in[n] * np.sin(2*np.pi*n*m/N))
+##            r = np.round(x_in[n] * np.cos(2*np.pi*n*m/N), 4)
+##            im = -np.round((x_in[n] * np.sin(2*np.pi*n*m/N)), 4)
+            r = x_in[n] * np.cos(2*np.pi*n*m/N)
+            im = -(x_in[n] * np.sin(2*np.pi*n*m/N))
             tmp = complex(r,im)
             X += tmp
-        print('X(',m,') = %2.4f' % X.real,'%2.4f' % X.imag,'j')
-        print('abs(X) = ',abs(X))
-        print(X.imag/abs(X))
+
+        tmp = complex( np.round(X.real,4), np.round(X.imag, 4) )
+        X = tmp
+        X_list.append(tmp)
+        print('X(',m,') = %2.4f' % X.real,'%2.4f' % X.imag,'j')#m-ный компонент ДПФ
 ##        print('  Модуль = %2.4f' % abs(X), 'Угол = %2.1f' % (180*np.arctan(X.imag/X.real)/np.pi) )
-        print('  Модуль = %2.4f' % abs(X), 'Угол = %2.1f' % (cmath.phase(X)*180/3.1415) )
+        print('  Модуль = %2.4f' % abs(X), '; Угол = %2.1f' % (cmath.phase(X)*180/3.1415) )
+
+    real_list = []
+    imag_list = []
+    module_list = []
+    angle_list = []
+    for x_item in X_list:
+        real_list.append(x_item.real)
+        imag_list.append(x_item.imag)
+        module_list.append(abs(x_item))
+        angle_list.append(cmath.phase(x_item)*180/3.14)
+        print(x_item)
+
+    rows = 4
+    cols = 1
+    ax_index = 0
+    x = np.arange(len(X_list))
+    
+    fig = plt.figure()
+
+    ax_index += 1
+    ax1 = fig.add_subplot(rows, cols, ax_index)
+    ax1.set_title('Действительная часть')
+    ax1.grid(which="major", linewidth=1.2)
+    ax1.grid(which="minor", linestyle="--", color="gray", linewidth=0.5)
+    ax1.bar(x, real_list)
+
+    ax_index += 1
+    ax2 = fig.add_subplot(rows, cols, ax_index)
+    ax2.set_title('Мнимая часть часть')
+    ax2.grid(which="major", linewidth=1.2)
+    ax2.grid(which="minor", linestyle="--", color="gray", linewidth=0.5)
+    ax2.bar(x, imag_list)
+
+    ax_index += 1
+    ax3 = fig.add_subplot(rows, cols, ax_index)
+    ax3.set_title('Модуль')
+    ax3.grid(which="major", linewidth=1.2)
+    ax3.grid(which="minor", linestyle="--", color="gray", linewidth=0.5)
+    ax3.bar(x, module_list)
+
+    ax_index += 1
+    ax4 = fig.add_subplot(rows, cols, ax_index)
+    ax4.set_title('Угол')
+    ax4.grid(which="major", linewidth=1.2)
+    ax4.grid(which="minor", linestyle="--", color="gray", linewidth=0.5)
+    ax4.bar(x, angle_list)
+    
+##    plt.bar(x, angle_list)
+##    plt.xticks(x, ['a','b','c'])
+    plt.show()
         
     return 0
 
