@@ -67,10 +67,18 @@ def main(argv):
 
     GetDpfFreques(N, fs)
 
-    print('\nЗначения входной последовательности:')
-    x_1 = A_1 * np.sin( 2*np.pi * f0_1 * (np.arange(0, N, 1) * ts) )
-    x_2 = A_2 * np.sin( 2*np.pi * f0_2 * (np.arange(0, N, 1) * ts) + 3*np.pi/4 )
-    x_in = x_1 + x_2
+    print('\nЗначения входной последовательности сигнала:')
+    t_arr = np.arange(0, N, 1) * ts
+    x_1 = A_1 * np.sin( 2*np.pi * f0_1 * t_arr )
+    x_2 = A_2 * np.sin( 2*np.pi * f0_2 * t_arr + 3*np.pi/4 )
+    x_in = np.round( (x_1 + x_2), 4)
+
+    fig, ax = plt.subplots()
+    ax.grid()
+##    ax.plot(t_arr, x_1)
+##    ax.plot(t_arr, x_2)
+##    ax.plot(t_arr, x_in)
+
 
     cnt = 0
     for x in x_in:
@@ -78,20 +86,29 @@ def main(argv):
         cnt += 1
 
     print('\nРассчёт значений гармоник:')
+    X_list = []
     for m in range(N):
-        X = 0
+        X = complex()
         for n in range(N):
             r = np.round(x_in[n] * np.cos(2*np.pi*n*m/N), 4)
-            im = -np.round((x_in[n] * np.sin(2*np.pi*n*m/N)), 4)
+            im = (-1) * np.round((x_in[n] * np.sin(2*np.pi*n*m/N)), 4)
 ##            r = x_in[n] * np.cos(2*np.pi*n*m/N)
 ##            im = -(x_in[n] * np.sin(2*np.pi*n*m/N))
             tmp = complex(r,im)
             X += tmp
+        X_list.append(abs(X))
         print('X(',m,') = %2.4f' % X.real,'%2.4f' % X.imag,'j')
-        print('abs(X) = ',abs(X))
-        print(X.imag/abs(X))
+        print(np.round(np.arcsin(X.imag/abs(X))*180/np.pi,1))
+        print(np.round(np.arccos(X.real/abs(X))*180/np.pi,1))
 ##        print('  Модуль = %2.4f' % abs(X), 'Угол = %2.1f' % (180*np.arctan(X.imag/X.real)/np.pi) )
-        print('  Модуль = %2.4f' % abs(X), 'Угол = %2.1f' % (cmath.phase(X)*180/3.1415) )
+        print('  Модуль = %2.4f' % np.round(abs(X)), ', Угол = %2.1f' % (cmath.phase(X)*180/3.1415) )
+
+    
+##    ax.hist(X_list, 50, density=False)
+##    ax.hist(X_list)
+    plt.bar(np.arange(0, len(X_list),1), height=X_list)
+    plt.show()
+    
         
     return 0
 
